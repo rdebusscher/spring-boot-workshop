@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package be.atbach.demo.spring.rest;
+package be.atbash.demo.spring.rest.web;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import be.atbash.demo.spring.rest.model.Person;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
-public class DemoApplication {
+@RestController
+public class PersonController {
 
-	// Run the application
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
-
+    @GetMapping("/person")
+    public Person person() {
+        // An endpoint that shows the default support of JSON handling through Jackson (included by default using the WebMVC Starter)
+        return new Person("John Doe", 30);
+    }
 }
+

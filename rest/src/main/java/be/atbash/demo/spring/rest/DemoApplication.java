@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package be.atbach.demo.spring.rest.web;
+package be.atbash.demo.spring.rest;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@RestController
-public class HelloController {
+@SpringBootApplication
+public class DemoApplication {
 
-    @GetMapping("/hello")
-    public String hello() {
-        // Endpoint returning a String. Just to show that it all works.
-        return "hello";
-    }
+	// Run the application
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+
 }

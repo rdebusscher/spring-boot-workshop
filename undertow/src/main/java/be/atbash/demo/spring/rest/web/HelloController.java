@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package be.atbach.demo.spring.rest.web;
+package be.atbash.demo.spring.rest.web;
 
-import be.atbach.demo.spring.rest.model.Person;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PersonController {
+public class HelloController {
 
-    @GetMapping("/person")
-    public Person person() {
-        // An endpoint that shows the default support of JSON handling through Jackson (included by default using the WebMVC Starter)
-        return new Person("John Doe", 30);
+    @GetMapping("/hello")
+    public String hello() {
+        // Endpoint returning a String. Just to show that it all works.
+        return "hello";
     }
 }
-
