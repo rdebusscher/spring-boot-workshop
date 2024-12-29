@@ -1,0 +1,15 @@
+# Update license header
+
+mvn license:format
+
+
+curl -X POST --location "http://localhost:8080/loan" -H "Content-Type: application/json" -d '{
+          "amount":100000.0,
+          "years":10
+        }'
+
+
+curl -X POST --location "http://localhost:8080/loan" -H "Content-Type: application/json" -d '{
+          "amount":-100000.0,
+          "years":10
+        }'
