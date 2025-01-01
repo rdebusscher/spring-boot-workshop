@@ -6,3 +6,8 @@ Step by step creating a production ready Spring Boot 3.x application.
 - Using Undertow: see directory `undertow`
 - Services for Business Logic and Validation of parameters and how to test them: see directory `business-logic`
 
+
+
+Other
+
+- Disable serving static content: see directory `no-static`
