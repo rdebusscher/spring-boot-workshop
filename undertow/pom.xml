@@ -50,6 +50,7 @@
         <!-- define the Spring Boot version we like to use -->
         <spring.boot.version>3.4.1</spring.boot.version>
 
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
