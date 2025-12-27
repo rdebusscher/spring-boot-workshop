@@ -8,6 +8,10 @@ Step by step creating a production ready Spring Boot 3.x application.
 - Proper Exception handling using Problem Detail JSON: see directory `exception-handling`
 - Do not use interfaces for Service and Validation Spring beans: see directory `no-interface`
 
+Spring Boot 4.x specifics
+
+- Getting started: see directory `rest4`
+
 Other
 
 - Disable serving static content: see directory `no-static`
