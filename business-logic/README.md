@@ -14,7 +14,7 @@ Compiling and packaging the application into an executable jar file is done usin
 
     mvn clean package
 
-After you have packaged the application using Maven, you can run it using the `mvn spring-boot:run` command or `java—jar target/rest-1.0.0-SNAPSHOT.jar`.
+After you have packaged the application using Maven, you can run it using the `mvn spring-boot:run` command or `java—jar target/business-logic-1.0.0-SNAPSHOT.jar`.
 
 ## Calling the endpoints.
 

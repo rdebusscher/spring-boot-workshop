@@ -1,0 +1,27 @@
+# Update license header
+
+mvn license:format
+
+# Start MySQL database in Docker
+# from within src/main/docker directory
+
+docker compose up -d
+
+# testing endpoints
+curl -X POST --location "http://localhost:8080/company" -H "Content-Type: application/json" -d '{
+          "name":"acme"}'
+
+curl "http://localhost:8080/company/acme"
+
+
+curl -X POST --location "http://localhost:8080/employee" \
+    -H "Content-Type: application/json" \
+    -d '{
+          "email": "john.doe@acme.org",
+          "firstName" : "John",
+          "lastName" : "Doe",
+          "gender" : "MALE",
+          "company" : {"name" :  "acme"}
+        }'
+
+curl "http://localhost:8080/company/acme/employees"

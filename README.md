@@ -7,6 +7,7 @@ Step by step creating a production ready Spring Boot 3.x application.
 - Services for Business Logic and Validation of parameters and how to test them: see directory `business-logic`
 - Proper Exception handling using Problem Detail JSON: see directory `exception-handling`
 - Do not use interfaces for Service and Validation Spring beans: see directory `no-interface`
+- Access database, mapping between entity and DTO and more testing: see directory `database`
 
 Spring Boot 4.x specifics
 
