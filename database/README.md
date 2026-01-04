@@ -28,7 +28,7 @@ Compiling and packaging the application into an executable JAR file is done usin
 
     mvn clean package
 
-The application can be run using the `mvn spring-boot:run` command or `java -jar target/database-1.0.0-SNAPSHOT.jar -Dspring-boot.run.profiles=dev` after you have packaged the application using Maven.
+The application can be run using the `mvn spring-boot:run` command or `java -Dspring-boot.run.profiles=dev -jar target/database-1.0.0-SNAPSHOT.jar` after you have packaged the application using Maven.
 
 ## Calling the endpoints.
 
@@ -178,3 +178,9 @@ And you can work around this problem by wrapping the call to the endpoint in a s
 Or you can use the `WebTestClient` to call the endpoints of a 'real application instance' you have started. But that requires more work to have a database in a known state at the beginning of the test.
 
 This problem will also be solved in the `test-data` example project.
+
+## Next Steps
+
+- Load data the easy way into your database at the start of your test method. (see 'test-data')
+- Use Repository calls as the assertions in your test method (see 'test-data-simple')
+- Use validation annotations for simple payload checks. (see 'validation')

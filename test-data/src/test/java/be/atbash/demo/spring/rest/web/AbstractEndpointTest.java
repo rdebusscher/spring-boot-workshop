@@ -15,10 +15,19 @@
  */
 package be.atbash.demo.spring.rest.web;
 
+import be.atbash.demo.spring.rest.DemoApplication;
+import be.atbash.demo.spring.rest.dbunit.JpaMetaModelHelper;
+import be.atbash.demo.spring.rest.dbunit.TestDataHelper;
 import be.atbash.demo.spring.rest.helper.MvcResultChecker;
+import be.atbash.demo.spring.rest.jupiter.TestDataExtension;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ExceptionCollector;
@@ -27,9 +36,19 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-// Helper parent class for Integration tests which helps calling endpoints.
-public abstract class AbstractEndpointTest {
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+
+// Helper parent class for Integration tests which helps to call endpoints.
+@SpringBootTest(classes = {DemoApplication.class}) // Start application in 'testing mode'
+@AutoConfigureMockMvc // have MockMvc available for calling endpoints.
+@ExtendWith(TestDataExtension.class)
+@Import(value = JpaMetaModelHelper.class)
+public abstract class AbstractEndpointTest extends TestDataHelper {
 
     @Autowired
     private ObjectMapper objectMapper; // The Jackson Object Mapper which is also used by Spring Boot itself.
@@ -136,10 +155,28 @@ public abstract class AbstractEndpointTest {
     }
 
     private MvcResult executeRequest(MockHttpServletRequestBuilder requestBuilder, ResultMatcher[] matchers) throws Exception {
-        // See 'test-data' example for a more advanced version of this method.
-        return mockMvc.perform(requestBuilder)
-                .andExpectAll(matchers)
-                .andReturn();
+        Writer callDetailWriter = new StringWriter();
+
+        // We call the endpoint from another thread (using a future)
+        // This guarantees us that application handling is separate from the test (transaction, hibernate session, etc)
+        CompletableFuture<MvcResult> future = CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return mockMvc.perform(requestBuilder)
+                                .andDo(MockMvcResultHandlers.print(callDetailWriter))
+                                .andExpectAll(matchers)
+                                .andReturn();
+                    } catch (Exception e) {
+                        // Exception during mockMvc.perform
+                        Assertions.fail("Failure during post call", e);
+                        throw new RuntimeException(e);
+                    }
+                }, Executors.newSingleThreadExecutor())
+                .exceptionally(e -> {
+                    System.out.println(callDetailWriter);
+                    Assertions.fail(e.getCause().getMessage(), e.getCause());
+                    return null; // because method needs a return but never used due to .fail()
+                });
+        return future.get();  //  We could define a timeout for the case our request never returns.
     }
 
     private String asRequestBody(Object body) throws JsonProcessingException {

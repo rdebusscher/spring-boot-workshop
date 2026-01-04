@@ -1,0 +1,39 @@
+/*
+ * Copyright 2024-2026 Rudy De Busscher (https://www.atbash.be)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package be.atbash.demo.spring.rest.mapper;
+
+import be.atbash.demo.spring.rest.dto.CompanyDTO;
+import be.atbash.demo.spring.rest.dto.CompanyWithIdDTO;
+import be.atbash.demo.spring.rest.model.Company;
+import org.springframework.stereotype.Component;
+
+@Component
+public class CompanyMapperService {
+
+    public CompanyWithIdDTO asDTOWithId(Company company) {
+        return new CompanyWithIdDTO(company.getId(), company.getName());
+    }
+
+    public CompanyDTO asDTO(Company company) {
+        return new CompanyDTO(company.getName());
+    }
+
+    public Company asEntity(CompanyDTO companyDTO) {
+        Company company = new Company();
+        company.setName(companyDTO.name());
+        return company;
+    }
+}
